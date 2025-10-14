@@ -11,20 +11,6 @@ function OpenButton.New(Window)
     local OpenButtonMain = {
         Button = nil
     }
-    
-    local Icon
-    
-    
-    
-    -- Icon = New("ImageLabel", {
-    --     Image = "",
-    --     Size = UDim2.new(0,22,0,22),
-    --     Position = UDim2.new(0.5,0,0.5,0),
-    --     LayoutOrder = -1,
-    --     AnchorPoint = Vector2.new(0.5,0.5),
-    --     BackgroundTransparency = 1,
-    --     Name = "Icon"
-    -- })
 
     local Title = New("TextLabel", {
         Text = Window.Title,
@@ -34,15 +20,39 @@ function OpenButton.New(Window)
         AutomaticSize = "XY",
     })
 
+    -- Area Logo (paling kiri)
+    local LogoArea = New("Frame", {
+        Size = UDim2.new(0,44-8,0,44-8),
+        BackgroundTransparency = 1, 
+        Name = "LogoArea",
+    }, {
+        New("ImageLabel", {
+            Image = "rbxassetid://100253708538", -- Ganti dengan ID logo kamu
+            Size = UDim2.new(1,0,1,0),
+            BackgroundTransparency = 1,
+            ScaleType = Enum.ScaleType.Crop, -- Full area
+            Position = UDim2.new(0.5,0,0.5,0),
+            AnchorPoint = Vector2.new(0.5,0.5),
+        })
+    })
+
+    -- Divider 1 (setelah logo)
+    local Divider1 = New("Frame", {
+        Size = UDim2.new(0,1,1,0),
+        BackgroundColor3 = Color3.new(1,1,1),
+        BackgroundTransparency = .9,
+    })
+
+    -- Area Drag (paling kanan)
     local Drag = New("Frame", {
         Size = UDim2.new(0,44-8,0,44-8),
         BackgroundTransparency = 1, 
         Name = "Drag",
     }, {
         New("ImageLabel", {
-            Image = Creator.Icon("move")[1],
-            ImageRectOffset = Creator.Icon("move")[2].ImageRectPosition,
-            ImageRectSize = Creator.Icon("move")[2].ImageRectSize,
+            Image = Creator.Icon("vector-square")[1],
+            ImageRectOffset = Creator.Icon("vector-square")[2].ImageRectPosition,
+            ImageRectSize = Creator.Icon("vector-square")[2].ImageRectSize,
             Size = UDim2.new(0,18,0,18),
             BackgroundTransparency = 1,
             Position = UDim2.new(0.5,0,0.5,0),
@@ -53,10 +63,10 @@ function OpenButton.New(Window)
             ImageTransparency = .3,
         })
     })
-    local Divider = New("Frame", {
+
+    -- Divider 2 (sebelum drag)
+    local Divider2 = New("Frame", {
         Size = UDim2.new(0,1,1,0),
-        Position = UDim2.new(0,20+16,0.5,0),
-        AnchorPoint = Vector2.new(0,0.5),
         BackgroundColor3 = Color3.new(1,1,1),
         BackgroundTransparency = .9,
     })
@@ -70,6 +80,7 @@ function OpenButton.New(Window)
         Active = true,
         Visible = false,
     })
+    
     local Button = New("TextButton", {
         Size = UDim2.new(0,0,0,44),
         AutomaticSize = "X",
@@ -79,9 +90,6 @@ function OpenButton.New(Window)
         ZIndex = 99,
         BackgroundColor3 = Color3.new(0,0,0),
     }, {
-        -- New("UIScale", {
-        --     Scale = 1.05,
-        -- }),
 	    New("UICorner", {
             CornerRadius = UDim.new(1,0)
         }),
@@ -95,27 +103,21 @@ function OpenButton.New(Window)
                 Color = ColorSequence.new(Color3.fromHex("40c9ff"), Color3.fromHex("e81cff"))
             })
         }),
-        Drag,
-        Divider,
         
-        New("UIListLayout", {
-            Padding = UDim.new(0, 4),
-            FillDirection = "Horizontal",
-            VerticalAlignment = "Center",
-        }),
+        -- URUTAN: Logo | Divider | TextButton | Divider | Drag
+        LogoArea,
+        Divider1,
         
         New("TextButton",{
             AutomaticSize = "XY",
             Active = true,
-            BackgroundTransparency = 1, -- .93
+            BackgroundTransparency = 1,
             Size = UDim2.new(0,0,0,44-(4*2)),
-            --Position = UDim2.new(0,20+16+16+1,0,0),
             BackgroundColor3 = Color3.new(1,1,1),
         }, {
             New("UICorner", {
                 CornerRadius = UDim.new(1,-4)
             }),
-            Icon,
             New("UIListLayout", {
                 Padding = UDim.new(0, Window.UIPadding),
                 FillDirection = "Horizontal",
@@ -127,6 +129,16 @@ function OpenButton.New(Window)
                 PaddingRight = UDim.new(0,7+4),
             }),
         }),
+        
+        Divider2,
+        Drag,
+        
+        New("UIListLayout", {
+            Padding = UDim.new(0, 4),
+            FillDirection = "Horizontal",
+            VerticalAlignment = "Center",
+        }),
+        
         New("UIPadding", {
             PaddingLeft = UDim.new(0,4),
             PaddingRight = UDim.new(0,4),
@@ -135,34 +147,9 @@ function OpenButton.New(Window)
     
     OpenButtonMain.Button = Button
     
-    
-    
     function OpenButtonMain:SetIcon(newIcon)
-        if Icon then
-            Icon:Destroy()
-        end
-        if newIcon then
-            Icon = Creator.Image(
-                newIcon,
-                Window.Title,
-                0,
-                Window.Folder,
-                "OpenButton",
-                true,
-                Window.IconThemed
-            )
-            Icon.Size = UDim2.new(0,22,0,22)
-            Icon.LayoutOrder = -1
-            Icon.Parent = OpenButtonMain.Button.TextButton
-        end
+        return 
     end
-    
-    if Window.Icon then
-        OpenButtonMain:SetIcon(Window.Icon)
-    end
-    
-    
-    
     Creator.AddSignal(Button:GetPropertyChangedSignal("AbsoluteSize"), function()
         Container.Size = UDim2.new(
             0, Button.AbsoluteSize.X,
@@ -187,19 +174,16 @@ function OpenButton.New(Window)
     function OpenButtonMain:Edit(OpenButtonConfig)
         local OpenButtonModule = {
             Title = OpenButtonConfig.Title,
-            Icon = OpenButtonConfig.Icon,
             Enabled = OpenButtonConfig.Enabled,
             Position = OpenButtonConfig.Position,
             OnlyIcon = OpenButtonConfig.OnlyIcon or false,
-            Draggable = OpenButtonConfig.Draggable or nil,
+            Draggable = OpenButtonConfig.Draggable,
             OnlyMobile = OpenButtonConfig.OnlyMobile,
             CornerRadius = OpenButtonConfig.CornerRadius or UDim.new(1, 0),
             StrokeThickness = OpenButtonConfig.StrokeThickness or 2,
             Color = OpenButtonConfig.Color 
                 or ColorSequence.new(Color3.fromHex("40c9ff"), Color3.fromHex("e81cff")),
         }
-        
-        -- wtf lol
         
         if OpenButtonModule.Enabled == false then
             Window.IsOpenButtonEnabled = false
@@ -212,9 +196,9 @@ function OpenButton.New(Window)
         end
         
         
-        if OpenButtonModule.Draggable == false and Drag and Divider then
+        if OpenButtonModule.Draggable == false and Drag and Divider2 then
             Drag.Visible = OpenButtonModule.Draggable
-            Divider.Visible = OpenButtonModule.Draggable
+            Divider2.Visible = OpenButtonModule.Draggable
             
             if DragModule then
                 DragModule:Set(OpenButtonModule.Draggable)
@@ -225,31 +209,17 @@ function OpenButton.New(Window)
             Container.Position = OpenButtonModule.Position
         end
         
-        if OpenButtonModule.OnlyIcon == true and Title then
+        if OpenButtonModule.OnlyIcon and Title then
             Title.Visible = false
             Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,7)
             Button.TextButton.UIPadding.PaddingRight = UDim.new(0,7)
-        elseif OpenButtonModule.OnlyIcon == false then
-            Title.Visible = true
-            Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,7+4)
-            Button.TextButton.UIPadding.PaddingRight = UDim.new(0,7+4)
         end
-        
-        --OpenButtonMain:Visible((not OpenButtonModule.OnlyMobile) or (not Window.IsPC))
-        
-        --if not OpenButton.Visible then return end
         
         if Title then
             if OpenButtonModule.Title then
                 Title.Text = OpenButtonModule.Title
                 Creator:ChangeTranslationKey(Title, OpenButtonModule.Title)
-            elseif OpenButtonModule.Title == nil then
-                --Title.Visible = false
             end
-        end
-        
-        if OpenButtonModule.Icon then
-            OpenButtonMain:SetIcon(OpenButtonModule.Icon)
         end
 
         Button.UIStroke.UIGradient.Color = OpenButtonModule.Color
@@ -268,3 +238,4 @@ end
 
 
 return OpenButton
+
