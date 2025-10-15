@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.6.54  |  2025-10-14  |  Roblox UI Library for scripts
+    v1.6.54  |  2025-10-15  |  Roblox UI Library for scripts
     
     This script is NOT intended to be modified.
     To view the source code, see the `src/` folder on the official GitHub repository.
@@ -3816,7 +3816,7 @@ BackgroundTransparency=1,
 Name="LogoArea",
 },{
 ac("ImageLabel",{
-Image="rbxassetid://100253708538",
+Image="rbxassetid://100253708538375",
 Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
 ScaleType=Enum.ScaleType.Crop,

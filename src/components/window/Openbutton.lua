@@ -27,7 +27,7 @@ function OpenButton.New(Window)
         Name = "LogoArea",
     }, {
         New("ImageLabel", {
-            Image = "rbxassetid://100253708538", -- Ganti dengan ID logo kamu
+            Image = "rbxassetid://100253708538375", -- Ganti dengan ID logo kamu
             Size = UDim2.new(1,0,1,0),
             BackgroundTransparency = 1,
             ScaleType = Enum.ScaleType.Crop, -- Full area
